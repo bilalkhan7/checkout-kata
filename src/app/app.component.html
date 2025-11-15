@@ -1,0 +1,44 @@
+<div class="app-shell">
+  <header class="app-shell__header">
+    <div class="app-shell__brand">
+      <div class="app-shell__logo">H</div>
+
+      <div class="app-shell__brand-text">
+        <div class="app-shell__title">Checkout Kata</div>
+        <div class="app-shell__subtitle">Supermarket checkout system</div>
+      </div>
+    </div>
+
+    <nav class="app-shell__nav">
+      <a
+        routerLink="/products"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Products
+      </a>
+
+      @if (hasItems) {
+        <a
+          routerLink="/checkout"
+          routerLinkActive="is-active"
+        >
+          Checkout
+        </a>
+      } @else {
+        <span
+          class="app-shell__nav-link app-shell__nav-link--disabled"
+          aria-disabled="true"
+        >
+          Checkout
+        </span>
+      }
+    </nav>
+  </header>
+
+  <main class="app-shell__main">
+    <div class="app-shell__content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
