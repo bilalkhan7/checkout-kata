@@ -1,0 +1,37 @@
+<section class="panel">
+  <header class="panel__header">
+    <h2 class="panel__title">Checkout</h2>
+    <p class="panel__subtitle">
+      Review items in your shopping cart before checking out.
+    </p>
+  </header>
+
+  <div class="checkout-summary-wrapper">
+    <app-checkout-summary></app-checkout-summary>
+  </div>
+
+  <footer class="panel__footer">
+    <div class="panel__footer-left">
+      <a routerLink="/products" class="btn btn--ghost">
+        ← Continue shopping
+      </a>
+    </div>
+
+    <div class="panel__footer-right">
+      <button
+        type="button"
+        class="btn btn--primary"
+        (click)="proceedToPayment()"
+        [disabled]="!hasItems"
+      >
+        Proceed to payment
+      </button>
+    </div>
+  </footer>
+
+  @if (paymentSuccess) {
+    <div class="snackbar snackbar--success">
+      Payment successful. Thanks for shopping with us.
+    </div>
+  }
+</section>
