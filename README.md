@@ -1,59 +1,169 @@
-# CheckoutKata
+# Checkout Kata – Angular 20 (Standalone Components + Signals + Playwright)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.5.
+This project is an implementation of the **Supermarket Checkout Kata**, built using **Angular 20**, **standalone components**, **signals**, **RxJS**, **unit tests**, and **Playwright E2E tests**.
 
-## Development server
+---
 
-To start a local development server, run:
+# Problem Statement
 
-```bash
-ng serve
+Implement a supermarket checkout that calculates the total price of scanned items:
+
+- Every item has a **unit price** which can change frequently.
+- Some items have **weekly offers** (e.g., “Apple: 30 each OR 2 for 45”).
+- Items can be scanned **in any order**, and the discount must be applied if the required quantity is reached.
+
+Example:
+
+| Item   | Unit Price | Offer         |
+|--------|------------|----------------|
+| Apple  | 30         | 2 for 45       |
+| Banana | 50         | 3 for 130      |
+| Peach  | 60         | —              |
+| Kiwi   | 20         | —              |
+
+Scanning **Apple → Banana → Apple** should apply the **2 for 45€** offer automatically.
+
+---
+
+# Tech Stack
+
+- **Angular 20** (Standalone components + Signals)
+- **TypeScript**
+- **RxJS**
+- **Karma + Jasmine** for unit testing
+- **Playwright** for E2E testing
+- **MockAPI.io** for product + offer APIs (selected and setup for showcasing the ability to consume real APIs)
+
+---
+
+# Project Structure
+
+```
+src/
+├── app/
+│   ├── app.component.*                    # App shell + navigation
+│   ├── app.routes.ts                      # Standalone routing
+│   │
+│   ├── features/
+│   │   ├── products/                      # Product listing page
+│   │   ├── checkout/components            # Checkout page with summary
+│   │   └── cart/                          # CartService + cart logic
+│   │
+│   ├── shared/
+│       ├── models/                        # PricingRule, Offer, CartRow
+│       ├── services/                      # ProductService, OfferService, PricingService
+│       └── utils/                         # Offer validators
+│
+├── e2e/                                   # Playwright tests
+└── styles.scss                            # Global styling
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+# Data Loading (Optimistic + Cached)
 
-```bash
-ng generate component component-name
+The system loads:
+
+### Products  
+`ProductService.loadProducts()`
+
+### Offers  
+`OfferService.loadOffers()`
+
+### Combined Pricing Table  
+`PricingService.loadPricing()`
+
+All services:
+
+- Use **fallbacks** to `DEFAULT_PRICING_TABLE` when the API is down
+- Use **shareReplay** for caching
+
+---
+
+# UI Features
+
+## Products Page
+- Cards showing name, price, and offer state
+- Offer badges:
+  - **Active this week**
+  - **Upcoming**
+  - **Recently expired**
+- “Add to cart”
+- Quantity dropdown
+- Client-side pagination
+- Sorting filters
+- Disabled “Proceed to Cart” when cart is empty
+
+## Checkout Page
+- Basket grouped by SKU
+- Quantity increment/decrement
+- Remove item button
+- Offer indicator in totals
+- Final summary (subtotal, discount, total)
+- Mock “Proceed to payment” → success message
+
+---
+
+# Testing Overview
+
+## Unit Tests (Jasmine + Karma)
+
+Location:
+```
+src/app/**/*.spec.ts
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
+## Playwright E2E Tests
+
+Location:
+```
+e2e/example.spec.ts
 ```
 
-## Building
-
-To build the project run:
+Run tests:
 
 ```bash
-ng build
+npx playwright install
+npm run e2e
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+# Running the Project
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Install dependencies
 
 ```bash
-ng test
+npm install
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Start dev server
 
 ```bash
-ng e2e
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Navigate to:
 
-## Additional Resources
+```
+http://localhost:4200
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Run Unit Tests
+
+```bash
+npm test
+```
+
+### Run E2E Tests
+
+```bash
+npm run e2e
+```
+
+---
+
+
