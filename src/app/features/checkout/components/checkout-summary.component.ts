@@ -1,9 +1,13 @@
 import { Component, computed } from '@angular/core';
-import { PricingRule, PricingTable } from '../../../shared/models/pricing.model';
+import {
+  PricingRule,
+  PricingTable,
+} from '../../../shared/models/pricing.model';
 import { isOfferActiveNow } from '../../../shared/utils/offer-date.utils';
 import { CartService } from '../../cart/cart.service';
 import { PricingService } from '../../../shared/services/pricing.service';
 import { CartRow } from '../../../shared/models/cart-row.model';
+import { EurCurrencyPipe } from '../../../shared/pipes/eur-currency-.pipe';
 
 type Totals = {
   subtotal: number;
@@ -16,6 +20,7 @@ type Totals = {
   standalone: true,
   templateUrl: './checkout-summary.component.html',
   styleUrls: ['./checkout-summary.component.scss'],
+  imports: [EurCurrencyPipe],
 })
 export class CheckoutSummaryComponent {
   private readonly rowsSignal = computed<CartRow[]>(() => {
@@ -33,7 +38,14 @@ export class CheckoutSummaryComponent {
       const rule: PricingRule | undefined = table[sku];
 
       if (!rule) {
-        return { sku, name: sku, quantity: qty, unitPrice: 0, lineTotal: 0, offerApplied: false };
+        return {
+          sku,
+          name: sku,
+          quantity: qty,
+          unitPrice: 0,
+          lineTotal: 0,
+          offerApplied: false,
+        };
       }
 
       const unitPrice = rule.unitPrice;
@@ -65,7 +77,10 @@ export class CheckoutSummaryComponent {
     const rows = this.rowsSignal();
     if (!rows.length) return { subtotal: 0, discount: 0, total: 0 };
 
-    const subtotal = rows.reduce((sum, r) => sum + r.unitPrice * r.quantity, 0);
+    const subtotal = rows.reduce(
+      (sum, r) => sum + r.unitPrice * r.quantity,
+      0
+    );
     const total = rows.reduce((sum, r) => sum + r.lineTotal, 0);
 
     return {

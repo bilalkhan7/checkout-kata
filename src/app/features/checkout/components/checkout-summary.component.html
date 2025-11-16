@@ -1,7 +1,7 @@
 <section class="panel panel--surface">
   <header class="panel__header">
     <div>
-      <h2 class="panel__title">cart summary</h2>
+      <h2 class="panel__title">Cart summary</h2>
       <p class="panel__subtitle">
         Adjust quantities or remove items. Offers update automatically.
       </p>
@@ -16,25 +16,32 @@
         Item
       </div>
 
-      <div class="cart-table__cell cart-table__cell--head cart-table__col--qty">
+      <div
+        class="cart-table__cell cart-table__cell--head cart-table__col--qty"
+      >
         Quantity
       </div>
 
-      <div class="cart-table__cell cart-table__cell--head cart-table__col--unit">
-        Unit Price (€)
+      <div
+        class="cart-table__cell cart-table__cell--head cart-table__col--unit"
+      >
+        Unit Price
       </div>
 
-      <div class="cart-table__cell cart-table__cell--head cart-table__col--total">
-        Total (€)
+      <div
+        class="cart-table__cell cart-table__cell--head cart-table__col--total"
+      >
+        Total
       </div>
 
-      <div class="cart-table__cell cart-table__cell--head cart-table__remove"></div>
+      <div
+        class="cart-table__cell cart-table__cell--head cart-table__remove"
+      ></div>
     </div>
 
     <div class="cart-table__body">
       @for (row of rows; track row.sku) {
       <div class="cart-table__row">
-
         <div class="cart-table__cell cart-table__cell--main">
           <div class="cart-table__item-name">
             {{ row.name }}
@@ -50,33 +57,46 @@
         </div>
 
         <div class="cart-table__cell cart-table__col--qty">
-          <button type="button" class="qty-btn" (click)="decrement(row.sku)" [disabled]="row.quantity === 1"
-            aria-label="Decrease quantity">
+          <button
+            type="button"
+            class="qty-btn"
+            (click)="decrement(row.sku)"
+            [disabled]="row.quantity === 1"
+            aria-label="Decrease quantity"
+          >
             −
           </button>
 
           <span class="qty-value">{{ row.quantity }}</span>
 
-          <button type="button" class="qty-btn qty-btn--plus" (click)="increment(row.sku)"
-            aria-label="Increase quantity">
+          <button
+            type="button"
+            class="qty-btn qty-btn--plus"
+            (click)="increment(row.sku)"
+            aria-label="Increase quantity"
+          >
             +
           </button>
         </div>
 
         <div class="cart-table__cell cart-table__col--unit">
-          €{{ row.unitPrice }}
+          {{ row.unitPrice | eur }}
         </div>
 
         <div class="cart-table__cell cart-table__col--total">
-          €{{ row.lineTotal }}
+          {{ row.lineTotal | eur }}
         </div>
 
         <div class="cart-table__cell cart-table__remove">
-          <button type="button" class="btn-icon btn-icon--danger" (click)="remove(row.sku)" aria-label="Remove item">
+          <button
+            type="button"
+            class="btn-icon btn-icon--danger"
+            (click)="remove(row.sku)"
+            aria-label="Remove item"
+          >
             ✕
           </button>
         </div>
-
       </div>
       }
     </div>
@@ -85,13 +105,15 @@
   <div class="totals">
     <div class="totals__row">
       <span>Subtotal</span>
-      <span>€{{ totals.subtotal }}</span>
+      <span>{{ totals.subtotal | eur }}</span>
     </div>
 
     @if (totals.discount > 0) {
     <div class="totals__row">
       <span>Discount from offers</span>
-      <span class="totals__discount">-{{ totals.discount }}€</span>
+      <span class="totals__discount">
+        -{{ totals.discount | eur }}
+      </span>
     </div>
 
     <div class="totals__spacer"></div>
@@ -101,7 +123,7 @@
 
     <div class="totals__row totals__row--emphasis">
       <span>Total</span>
-      <span>€{{ totals.total }}</span>
+      <span>{{ totals.total | eur }}</span>
     </div>
   </div>
 

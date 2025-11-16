@@ -11,6 +11,7 @@ import {
   isOfferActiveNow,
   isOfferExpiredNow,
 } from '../../shared/utils/offer-date.utils';
+import { EurCurrencyPipe } from '../../shared/pipes/eur-currency-.pipe';
 
 type SortMode = 'all' | 'with-offer' | 'without-offer';
 
@@ -19,10 +20,9 @@ type SortMode = 'all' | 'with-offer' | 'without-offer';
   standalone: true,
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
-  imports: [CommonModule, RouterModule, DatePipe],
+  imports: [CommonModule, RouterModule, DatePipe, EurCurrencyPipe],
 })
 export class ProductsComponent implements OnInit {
-  // --- signals --------------------------------------------------------------
   private readonly allProducts = signal<PricingRule[]>([]);
   readonly sortMode = signal<SortMode>('all');
   readonly currentPage = signal(1);
@@ -33,7 +33,6 @@ export class ProductsComponent implements OnInit {
 
   readonly quantityOptions = [1, 2, 3, 4, 5, 10];
 
-  // derived
   readonly totalProducts = computed(() => this.allProducts().length);
 
   private readonly filteredProducts = computed<PricingRule[]>(() => {
@@ -63,7 +62,6 @@ export class ProductsComponent implements OnInit {
     return products.slice(start, start + this.pageSize);
   });
 
-  // IMPORTANT: Use getter-based API for tests (no direct signal call)
   readonly cartCount = computed(() => this.cartService.items.length);
 
   constructor(
@@ -83,8 +81,6 @@ export class ProductsComponent implements OnInit {
       this.selectedQuantities.set(initial);
     });
   }
-
-  // --- handlers -------------------------------------------------------------
 
   setSortMode(mode: SortMode) {
     this.sortMode.set(mode);
@@ -117,8 +113,6 @@ export class ProductsComponent implements OnInit {
     this.lastAddedSku.set(sku);
     setTimeout(() => this.lastAddedSku.set(null), 1100);
   }
-
-  // --- offer helpers --------------------------------------------------------
 
   isOfferActive(p: PricingRule): boolean {
     return isOfferActiveNow(p.offer);
