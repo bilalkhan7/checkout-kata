@@ -56,10 +56,11 @@ src/
 │
 ├── e2e/                                   # Playwright tests
 └── styles.scss                            # Global styling
+├── screenshots/                           # Screenshots of the Checkout Kata
+
 ```
 
 ---
-
 
 # Data Loading (Optimistic + Cached)
 
@@ -102,6 +103,25 @@ All services:
 - Offer indicator in totals
 - Final summary (subtotal, discount, total)
 - Mock “Proceed to payment” → success message
+
+---
+
+## Screenshots
+
+### Products Page
+<img src="./screenshots/products.png" width="700"/>
+
+### Products — Active & Upcoming Offers
+<img src="./screenshots/products-with-offer.png" width="700"/>
+
+### Checkout Summary
+<img src="./screenshots/checkout-summary.png" width="700"/>
+
+### Unit Tests Running
+<img src="./screenshots/unit-tests.png" width="700"/>
+
+### E2E Tests Running (Playwright)
+<img src="./screenshots/e2e-tests.png" width="700"/>
 
 ---
 
