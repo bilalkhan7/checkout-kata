@@ -91,6 +91,17 @@
               "src/styles.scss"
             ]
           }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "checkout-kata:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "checkout-kata:serve:production"
+            }
+          }
         }
       }
     }
